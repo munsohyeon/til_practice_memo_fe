@@ -30,7 +30,7 @@ onMounted(async () => {
 const moveToForm = () => {
 
   const json = JSON.stringify(state.memo);
-
+// object to JSON(직렬화 serialization)
   router.push ({
     path: '/memo/add',
       state: {

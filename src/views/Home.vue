@@ -30,7 +30,22 @@ const search = () => {
   findAll(params);
 }
 
+// 삭제 버튼 클릭시 "삭제하시겠습니까?"
+// confirm 띄어주시고 "예" 클릭했을 때 삭제 처리 후 리스트를 새로 받아와야한다.
 
+const remove = async (params) => {
+  if (confirm("삭제하시겠습니까?")) {
+    const data = await httpService.deleteById(params);
+
+    if (data.resultData === 1) {
+      alert("삭제 되었습니다.");
+      // findAll(); findAll로 하면 검색시 삭제를 할 경우 검색이 풀리기 때문에
+      search();
+    } else {
+      alert(data.resultMessage || "삭제에 실패하였습니다.");
+    }
+  }
+}
 
 </script>
 
@@ -51,7 +66,7 @@ const search = () => {
           <div class="d-flex justify-content-between">
             <b>{{ m.title }}</b>
             <div>
-              <span role="button" @click.prevent="remove(m.id)">삭제</span>
+              <span role="button" @click.prevent="remove(m)">삭제</span>
             </div>
           </div>
           <div class="mt-2">{{ m.content }}</div>
@@ -84,3 +99,17 @@ const search = () => {
   border: 1px solid #eee;
 }
 </style>
+<!-- const remove = async (id) => {
+  const isConfirmed = confirm("삭제하시겠습니까?");
+  if (!isConfirmed) return; // "아니오" 클릭 시 종료
+
+  const data = await httpService.deleteById(id); // id 전달
+
+  if (data.resultData === 1) {
+    alert("삭제되었습니다.");
+    await fetchList(); // 리스트 갱신 함수 (존재해야 함)
+  } else {
+    alert(data.resultMessage || "삭제에 실패했습니다.");
+  }
+};
+ -->
